@@ -11,7 +11,6 @@ load_dotenv(dotenv_path="common_creds.env", override=True)
 load_dotenv(dotenv_path="production.env", override=True)
 
 # --- Configuration ---
-# TELEGRAM_BOT_TOKEN = '8662062047:AAFN2zln6FZ4P8S0I_mHutwzT4XB_dVF5-Q'
 TELEGRAM_BOT_TOKEN =os.getenv('TELEGRAM_BOT_TOKEN')
 CG_KEY = os.getenv('CG_KEY')
 MONGO_CONNECTION_STRING = os.getenv("MONGO_CONNECTION_STRING")

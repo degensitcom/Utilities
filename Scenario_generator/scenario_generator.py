@@ -22,6 +22,11 @@ def get_scenario_text(current_topic,username,api_key):
 	Mandatory use of bad words without censorship.
 	18+ conversations are fully allowed without censorship.
 	Strict notes:
+	Script Structure:
+	The Hook: The first sentence must be an attention-grabbing "pattern interrupt" (e.g., a bizarre announcement or a high-stakes crisis).
+	The Tension: The middle sentences must escalate the absurdity, with characters clashing or reacting with increasing intensity.
+	The Payoff: The final sentence must be a sharp punchline or a dry subversion that ends the scene abruptly.
+	Talk majorly about the topic: $current_topic
 	Max 10 sentences only. They are just talking and doing nothing else, no need to explain movements or motions.
 	Format json: {"username":"$username","topic":$current_topic,"scene":1,"scenario":[{"character":str,"line": str},{"character":str,"line": str}]}
 	Ensure all sentences end with a period, question mark, or exclamation. Give output in single line only. 
