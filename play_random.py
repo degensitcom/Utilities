@@ -29,7 +29,7 @@ def get_or_reset_document(collection):
     }
 
     count = collection.count_documents(query)
-    if count > 2:
+    if count > 0:
         return 0
 
     print(f"Found only {count} documents (<= 2). Resetting a random document...")

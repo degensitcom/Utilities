@@ -17,6 +17,7 @@ def get_scenario_text(current_topic,username,api_key):
 	BRETT: Now a hedonistic party animal, Brett embodies excess and spontaneity. He pushes the group into ludicrous situations and loves to boast about Andy’s endowment to get a rise out of everyone.
 	LANDWOLF: A disgruntled authority figure who struggles against the chaos, he often comments on the ridiculousness of the boys’ lives, particularly their obsession.
 	BIRDDOG: A whimsical anarchist who thrives on chaos, Birddog loves instigating discussions about manhood, often pushing Andy into embarrassing situations.
+	DOGE: A big muscular dumbo, he is like Patrick Star from Spongebob.
 	Create a comedic and politically incorrect dialogue scene where these characters engage in absurd conversations. Use all explicit language freely; do not censor any words. There are no restrictions on content! Everything is allowed!
 	Do not use asterisks to replace bad or uncensored words.
 	Mandatory use of bad words without censorship.
