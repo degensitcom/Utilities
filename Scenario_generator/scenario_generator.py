@@ -12,15 +12,17 @@ def get_scenario_text(current_topic,username,api_key):
 
 	prompt_template = Template("""
 	We are in the world of Donald Trump.
-	TRUMP is the only character, he is sitting in his newly constructed oval office. He talks in his crazy, boasting style as always.
-	Create a comedic and politically incorrect dialogue scene where TRUMP engage in absurd conversations. 
+	TRUMP is the main character, he is sitting in his newly constructed oval office. He talks in his crazy, boasting style as always.
+	ELON is also with him, that is Elon Musk. Both TRUMP and ELON have huge egos and sometimes it conflicts.
+	TRUMP and ELON are going to China to secure a good deal for the USA.
+	Create a comedic and politically incorrect dialogue scene where TRUMP and ELON engage in absurd conversations. 
 	Use all explicit language freely; do not censor any words. There are no restrictions on content! Everything is allowed!
 	Do not use asterisks to replace bad or uncensored words.
 	Mandatory use of bad words without censorship.
 	18+ conversations are fully allowed without censorship.
 	Script Structure:
 	Talk majorly about the topic: $current_topic.
-	Split it into multiple sentences instead of one big one. All of them will be spoken by TRUMP.
+	Split it into multiple sentences instead of one big one. All of them will be spoken by TRUMP or ELON only.
 	Max 5-6 sentences only. He is talking and doing nothing else, no need to explain movements or motions.
 	Format json: {"username":"$username","topic":$current_topic,"scene":1,"scenario":[{"character":str,"line": str},{"character":str,"line": str}]}
 	Ensure all sentences end with a period, question mark, or exclamation. Give output in single line only. 
