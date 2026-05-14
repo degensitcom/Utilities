@@ -10,10 +10,10 @@ async def topic_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     MONGO_CONNECTION_STRING = context.bot_data.get("MONGO_CONNECTION_STRING")
     GROUP_ID = context.bot_data.get("GROUP_ID")
 
-    chat = update.effective_chat
-    group_id = chat.id
+    
+    group_id = update.effective_chat.id
     print(group_id)
-    print(type(group_id))
+    message_id = update.message.message_id
     if(str(group_id)!=str(GROUP_ID)):
         await update.message.reply_text("❌ Wrong group ID", parse_mode='Markdown')
         return
@@ -24,7 +24,7 @@ async def topic_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if context.args:
     	try:
 	        topic = " ".join(context.args)
-	        insert_topic(topic, username, user_id,MONGO_CONNECTION_STRING)
+	        insert_topic(topic, username, user_id,message_id, group_id,MONGO_CONNECTION_STRING)
 	        await update.message.reply_text(f"✅ **Topic:**\n{topic} added to processing", parse_mode='Markdown')
     	except Exception as e:
         	print(f"An error occurred: {e}")
@@ -33,7 +33,7 @@ async def topic_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("❌ Please provide a topic. \nExample: `/topic Talk about the distance of the sun`", parse_mode='Markdown')
 
 
-def insert_topic(topic, username, user_id,MONGO_CONNECTION_STRING):
+def insert_topic(topic, username, user_id,message_id, group_id,MONGO_CONNECTION_STRING):
     # Replace with your actual connection string
     client = MongoClient(MONGO_CONNECTION_STRING)
     
@@ -44,6 +44,8 @@ def insert_topic(topic, username, user_id,MONGO_CONNECTION_STRING):
     doc = {
         "topic": topic,
         "user_id": int(user_id),
+        "message_id": int(message_id),
+        "group_id": int(group_id),
         "username": username,
         "creation_time": datetime.datetime.now(datetime.timezone.utc),
         "processed": False
