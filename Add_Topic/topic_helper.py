@@ -45,7 +45,7 @@ def insert_topic(topic, username, user_id,message_id, group_id,MONGO_CONNECTION_
         "topic": topic,
         "user_id": int(user_id),
         "message_id": int(message_id),
-        "group_id": int(group_id),
+        "group_id": str(group_id),
         "username": username,
         "creation_time": datetime.datetime.now(datetime.timezone.utc),
         "processed": False
