@@ -34,6 +34,8 @@ for suggested_topic in suggested_topics:
     topic = suggested_topic.get("topic")
     username = suggested_topic.get("username")
     user_id = suggested_topic.get("user_id")
+    message_id = suggested_topic.get("message_id")
+    group_id = suggested_topic.get("group_id")
     try:
         success = True
         dialogues = get_scenario_text(topic,username,CHAT_GPT_API_KEY)
@@ -41,6 +43,8 @@ for suggested_topic in suggested_topics:
             "topic": topic,
             "scenario": dialogues.get("scenario"),
             "user_id": user_id,
+            "message_id": message_id,
+            "group_id": group_id,
             "username": username,
             "generation_time": datetime.now(timezone.utc),
             "unload": False,
