@@ -16,6 +16,7 @@ CG_KEY = os.getenv('CG_KEY')
 MONGO_CONNECTION_STRING = os.getenv("MONGO_CONNECTION_STRING")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 GROUP_ID = os.getenv("GROUP_ID")
+MODAL_API_KEY = os.getenv("MODAL_API_KEY")
 
 # ----------------------------------------------------------------------
 # --- Telegram Bot Handlers --------------------------------------------
@@ -41,6 +42,7 @@ def main():
     app.bot_data["GEMINI_API_KEY"] = GEMINI_API_KEY
     app.bot_data["MONGO_CONNECTION_STRING"] = MONGO_CONNECTION_STRING
     app.bot_data["GROUP_ID"] = GROUP_ID
+    app.bot_data["MODAL_API_KEY"] = MODAL_API_KEY
 
     # Register command handlers
     # app.add_handler(CommandHandler("start", start_command))

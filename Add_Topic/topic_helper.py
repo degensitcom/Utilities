@@ -2,6 +2,8 @@ from pymongo import MongoClient
 import datetime
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+from TTS_generator.modal_request import *
+
 async def topic_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handles the /chart command, generates, and sends the chart."""
 
@@ -9,7 +11,7 @@ async def topic_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     GEMINI_API_KEY = context.bot_data.get("GEMINI_API_KEY")
     MONGO_CONNECTION_STRING = context.bot_data.get("MONGO_CONNECTION_STRING")
     GROUP_ID = context.bot_data.get("GROUP_ID")
-
+    MODAL_API_KEY = context.bot_data.get("MODAL_API_KEY")
     
     group_id = update.effective_chat.id
     print(group_id)
@@ -24,7 +26,7 @@ async def topic_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if context.args:
     	try:
 	        topic = " ".join(context.args)
-	        insert_topic(topic, username, user_id,message_id, group_id,MONGO_CONNECTION_STRING)
+	        insert_topic(topic, username, user_id,message_id, group_id,MONGO_CONNECTION_STRING,MODAL_API_KEY)
 	        await update.message.reply_text(f"✅ **Topic:**\n{topic} added to processing", parse_mode='Markdown')
     	except Exception as e:
         	print(f"An error occurred: {e}")
@@ -33,7 +35,7 @@ async def topic_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("❌ Please provide a topic. \nExample: `/topic Talk about the distance of the sun`", parse_mode='Markdown')
 
 
-def insert_topic(topic, username, user_id,message_id, group_id,MONGO_CONNECTION_STRING):
+def insert_topic(topic, username, user_id,message_id, group_id,MONGO_CONNECTION_STRING,MODAL_API_KEY):
     # Replace with your actual connection string
     client = MongoClient(MONGO_CONNECTION_STRING)
     
@@ -54,3 +56,4 @@ def insert_topic(topic, username, user_id,message_id, group_id,MONGO_CONNECTION_
     result = collection.insert_one(doc)
     print(f"Successfully inserted document with ID: {result.inserted_id}")
     client.close()
+    get_modal_up(MODAL_API_KEY)
