@@ -73,15 +73,15 @@ No extra text.
 	response = client.responses.create(
 		model="gpt-5-mini",
 		tools=[{"type": "web_search"}],
-		input=prompt
+		input=prompt,
+		text={
+			"format": {
+				"type": "json_object"
+			}
+		}
 	)
 
-	data = response.output_text.strip()
-
-	# Optional cleanup
-	if data.startswith("```json"):
-		data = data.replace("```json", "").replace("```", "").strip()
-
+	data = response.output_text
 	data_dict = json.loads(data)
 
 	print(data_dict)
