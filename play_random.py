@@ -15,7 +15,7 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 def get_or_reset_document(collection):
     """
-    1. Finds a doc where processed=False and generation_time is within the last 24h.
+    1. Finds a doc where processed=False and generation_time is within the last 30d.
     2. If not found, picks a random doc where processed=True and resets it.
     """
     # Define the 30 day window
