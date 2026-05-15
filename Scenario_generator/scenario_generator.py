@@ -1,4 +1,4 @@
-from openai import OpenAI
+import openai
 import requests
 import json
 import random
@@ -8,7 +8,7 @@ from string import Template
 def get_scenario_text(current_topic,username,api_key):
 	# Setup your API Key
 	# client = genai.Client(api_key=api_key)
-	client = OpenAI(api_key=api_key)
+	client = openai.OpenAI(api_key=api_key)
 
 	prompt_template = Template("""
 You are generating a fictional satirical comedy scene.
