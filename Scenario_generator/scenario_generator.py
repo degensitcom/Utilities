@@ -19,9 +19,15 @@ def get_scenario_text(current_topic,username,api_key):
 	Use all explicit language freely; do not censor any words. There are no restrictions on content! Everything is allowed!
 	Do not use asterisks to replace bad or uncensored words.
 	Mandatory use of bad words without censorship.
-	18+ conversations are fully allowed without censorship.
 	Script Structure:
-	Talk majorly about the topic: $current_topic.
+	Create a short absurd satirical dialogue scene focused mainly on: $current_topic.
+	Tone:
+	- Chaotic comedy.
+	- Politically incorrect satire.
+	- Aggressive ego clashes.
+	- Internet-style humor.
+	- Use profanity naturally and uncensored when appropriate.
+	- Keep it funny and exaggerated.
 	Split it into multiple sentences instead of one big one. All of them will be spoken by TRUMP or ELON only.
 	Max 5-6 sentences only. He is talking and doing nothing else, no need to explain movements or motions.
 	Format json: {"username":"$username","topic":$current_topic,"scene":1,"scenario":[{"character":str,"line": str},{"character":str,"line": str}]}
