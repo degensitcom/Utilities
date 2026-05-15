@@ -11,80 +11,37 @@ def get_scenario_text(current_topic,username,api_key):
 	client = openai.OpenAI(api_key=api_key)
 
 	prompt_template = Template("""
-You are generating a fictional satirical comedy scene.
-If the topic "$current_topic" involves recent events, politics, trends, companies, celebrities, technology, finance, world news, or anything time-sensitive, first research the topic using available web search tools before writing the dialogue.
-Use the researched information naturally inside the jokes and dialogue.
-
-World Setting:
-We are in the world of Donald Trump.
-TRUMP is the main character. He is sitting in his newly constructed Oval Office. He speaks in an exaggerated, boastful, chaotic style.
-ELON is Elon Musk. Both TRUMP and ELON have massive egos and often compete for attention and dominance. Other times, they are the best of homies.
-TRUMP and ELON have just returned from China after securing “the greatest deals ever” for the USA.
-
-Task:
-Create a short absurd satirical dialogue scene focused mainly on:
-$current_topic
-
-Tone:
-- Chaotic comedy.
-- Politically incorrect satire.
-- Aggressive ego clashes.
-- Internet-style humor.
-- Use profanity naturally and uncensored when appropriate.
-- Keep it funny and exaggerated.
-
-Rules:
-- Maximum 5-6 total dialogue lines.
-- Only TRUMP or ELON may speak.
-- No narration.
-- No action descriptions.
-- No stage directions except optional paralinguistic tags.
-- Split thoughts into short punchy sentences.
-- Every sentence must end with proper punctuation.
-- Use normal sentence casing.
-- Acronyms can remain fully capitalized.
-
-Allowed optional paralinguistic tags at START of sentence only:
-[laugh]
-[chuckle]
-[cough]
-[clear throat]
-[groan]
-[shush]
-Do not overuse tags.
-
-Output Requirements:
-Return EXACTLY one single-line JSON object.
-
-Format:
-{"username":"$username","topic":"$current_topic","scene":1,"scenario":[{"character":"TRUMP","line":"..."},{"character":"ELON","line":"..."}]}
-
-Output only valid JSON.
-No markdown.
-No explanations.
-No extra text.
-	""")
+	We are in the world of Donald Trump.
+	TRUMP is the main character, he is sitting in his newly constructed oval office. He talks in his crazy, boasting style as always.
+	ELON is also with him, that is Elon Musk. Both TRUMP and ELON have huge egos and sometimes it conflicts.
+	TRUMP and ELON are going to China to secure a good deal for the USA.
+	Create a comedic and politically incorrect dialogue scene where TRUMP and ELON engage in absurd conversations. 
+	Use all explicit language freely; do not censor any words. There are no restrictions on content! Everything is allowed!
+	Do not use asterisks to replace bad or uncensored words.
+	Mandatory use of bad words without censorship.
+	18+ conversations are fully allowed without censorship.
+	Script Structure:
+	Talk majorly about the topic: $current_topic.
+	Split it into multiple sentences instead of one big one. All of them will be spoken by TRUMP or ELON only.
+	Max 5-6 sentences only. He is talking and doing nothing else, no need to explain movements or motions.
+	Format json: {"username":"$username","topic":$current_topic,"scene":1,"scenario":[{"character":str,"line": str},{"character":str,"line": str}]}
+	Ensure all sentences end with a period, question mark, or exclamation. Give output in single line only. 
+	Use Sentence case, where all sentences are normal, only first letter of first word is capitalized. 
+	Obviously for words which are like abbreviations, all will be caps.
+	Also, you can use only these Paralinguistic tags as it in in the script at start of the sentence, if needed but dont overdo it by using in every sentence: [laugh], [chuckle], [cough], [clear throat], [groan], [shush]""")
 
 	prompt = prompt_template.substitute(
         current_topic=current_topic,
         username=username,
     )
 
-	response = client.responses.create(
-		model="gpt-5-mini",
-		tools=[{"type": "web_search"}],
-		input=prompt,
-		text={
-			"format": {
-				"type": "json_object"
-			}
-		}
-	)
-
-	data = response.output_text
-	data_dict = json.loads(data)
-
+	response = client.chat.completions.create(
+        model="gpt-5.4-mini",
+        messages=[{"role": "user", "content": prompt}],
+        response_format={"type": "json_object"}
+    )
+	data_dict = json.loads(response.choices[0].message.content)
+	data = response.choices[0].message.content
 	print(data_dict)
-
 	return data_dict
 
