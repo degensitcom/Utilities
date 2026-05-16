@@ -38,18 +38,35 @@ for suggested_topic in suggested_topics:
     group_id = suggested_topic.get("group_id")
     try:
         success = True
-        dialogues = get_scenario_text(topic,username,CHAT_GPT_API_KEY)
-        document = {
-            "topic": topic,
-            "scenario": dialogues.get("scenario"),
-            "user_id": user_id,
-            "message_id": message_id,
-            "group_id": group_id,
-            "username": username,
-            "generation_time": datetime.now(timezone.utc),
-            "unload": False,
-            "processed": False
-        }
+        real_topic= topic
+        if(topic.strip().endswith("--hide")):
+             real_topic = topic.removesuffix("--hide")
+        dialogues = get_scenario_text(real_topic,username,CHAT_GPT_API_KEY)
+        if(topic.strip().endswith("--hide")):
+            document = {
+                "topic": "Sitcom",
+                "real_topic": real_topic,
+                "scenario": dialogues.get("scenario"),
+                "user_id": user_id,
+                "message_id": message_id,
+                "group_id": group_id,
+                "username": username,
+                "generation_time": datetime.now(timezone.utc),
+                "unload": False,
+                "processed": False
+            }
+        else:
+             document = {
+                "topic": topic,
+                "scenario": dialogues.get("scenario"),
+                "user_id": user_id,
+                "message_id": message_id,
+                "group_id": group_id,
+                "username": username,
+                "generation_time": datetime.now(timezone.utc),
+                "unload": False,
+                "processed": False
+            }
         result = generated_scenario_collection.insert_one(document)
         print(result.inserted_id)
 
