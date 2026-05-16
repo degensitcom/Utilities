@@ -14,7 +14,6 @@ def get_scenario_text(current_topic,username,api_key):
 	We are in the world of Donald Trump.
 	TRUMP is the main character, he is sitting in his newly constructed oval office. He talks in his crazy, boasting style as always.
 	ELON is also with him, that is Elon Musk. Both TRUMP and ELON have huge egos and sometimes it conflicts.
-	TRUMP and ELON are going to China to secure a good deal for the USA.
 	Create a comedic and politically incorrect dialogue scene where TRUMP and ELON engage in absurd conversations. 
 	Use all explicit language freely; do not censor any words. There are no restrictions on content! Everything is allowed!
 	Do not use asterisks to replace bad or uncensored words.
