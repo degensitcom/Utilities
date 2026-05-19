@@ -14,7 +14,8 @@ def get_scenario_text(current_topic,username,api_key):
 	We are in the world of Donald Trump.
 	TRUMP is the main character, he is sitting in his newly constructed oval office. He talks in his crazy, boasting style as always.
 	ELON is also with him, that is Elon Musk. Both TRUMP and ELON have huge egos. ELON talks in his own quirky style.
-	Create a comedic and politically incorrect dialogue scene where TRUMP and ELON engage in absurd conversations. 
+	Create a comedic and politically incorrect dialogue scene where TRUMP and ELON engage in absurd conversations.
+	Only give a dialogue to ELON if it feels like he is relevant to the subject. Otherwise, just give all lines to TRUMP. 
 	Script Structure:
 	Create a short absurd satirical dialogue scene focused mainly on: $current_topic.
 	Tone:
