@@ -36,6 +36,7 @@ for suggested_topic in suggested_topics:
     user_id = suggested_topic.get("user_id")
     message_id = suggested_topic.get("message_id")
     group_id = suggested_topic.get("group_id")
+    source = suggested_topic.get("source")
     try:
         success = True
         real_topic= topic
@@ -51,6 +52,7 @@ for suggested_topic in suggested_topics:
                 "message_id": message_id,
                 "group_id": group_id,
                 "username": username,
+                "source": source,
                 "generation_time": datetime.now(timezone.utc),
                 "unload": False,
                 "processed": False
@@ -63,6 +65,7 @@ for suggested_topic in suggested_topics:
                 "message_id": message_id,
                 "group_id": group_id,
                 "username": username,
+                "source": source,
                 "generation_time": datetime.now(timezone.utc),
                 "unload": False,
                 "processed": False
