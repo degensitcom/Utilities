@@ -13,9 +13,11 @@ def get_scenario_text(current_topic,username,api_key):
 	prompt_template = Template("""
 	We are in the world of Donald Trump.
 	TRUMP is the main character, he is sitting in his newly constructed oval office. He talks in his usual crazy, boasting and funny style to the extreme.
-	ELON is also with him, that is Elon Musk. Both TRUMP and ELON have huge egos. ELON talks in his own quirky style, and has a lot to say, but nothing very useful. Dont talk about just rockets and factories.
-	Create a comedic and politically incorrect dialogue scene where TRUMP and ELON engage in absurd conversations.
-	Only give a dialogue to ELON if it feels like he is relevant to the subject. Otherwise, just give all lines to TRUMP. 
+	ELON, that is Elon Musk is sitting to his left, and VANCE, that is JD Vance is sitting to his right. 
+	ELON talks in his own quirky style, and has a lot to say, but nothing very useful. Dont talk about just rockets and factories.
+	JD VANCE also talks in his own style, fawning over trump oftentimes.
+	Create a comedic and politically incorrect dialogue scene where TRUMP, ELON and VANCE engage in absurd conversations.
+	Only give a dialogue to ELON if it feels like he is relevant to the subject. Otherwise, just give all lines to TRUMP and VANCE. 
 	Script Structure:
 	Create a short absurd satirical dialogue scene focused mainly on: $current_topic.
 	Tone:
@@ -24,8 +26,8 @@ def get_scenario_text(current_topic,username,api_key):
 	- Internet-style humor.
 	- Use profanity naturally and uncensored when appropriate.
 	- Keep it funny and exaggerated.
-	Split it into multiple sentences instead of one big one. All of them will be spoken by TRUMP or ELON only.
-	Max 5-6 sentences only. He is talking and doing nothing else, no need to explain movements or motions.
+	Split it into multiple sentences instead of one big one. All of them will be spoken by TRUMP, VANCE or ELON only.
+	Max 5-6 sentences only. They are talking and doing nothing else, no need to explain movements or motions.
 	Format json: {"username":"$username","topic":$current_topic,"scene":1,"scenario":[{"character":str,"line": str},{"character":str,"line": str}]}
 	Ensure all sentences end with a period, question mark, or exclamation. Give output in single line only. 
 	Use Sentence case, where all sentences are normal, only first letter of first word is capitalized. 
