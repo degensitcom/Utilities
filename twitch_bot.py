@@ -1,49 +1,124 @@
-import asyncio
 import os
+import requests
+
+from dotenv import load_dotenv, dotenv_values
 from twitchio.ext import commands
-from dotenv import load_dotenv
-load_dotenv(dotenv_path="common_creds.env", override=True)
-load_dotenv(dotenv_path="development.env", override=True)
-ACCESS_TOKEN =os.getenv('ACCESS_TOKEN')
-REFRESH_TOKEN =os.getenv('REFRESH_TOKEN')
-CLIENT_ID =os.getenv('CLIENT_ID')
+import asyncio
+from pymongo import MongoClient
+import datetime
+
+ENV_FILE = "twitch_creds.env"
+
+def access_token_is_valid(token):
+    try:
+        response = requests.get(
+            "https://id.twitch.tv/oauth2/validate",
+            headers={
+                "Authorization": f"OAuth {token}"
+            },
+            timeout=30,
+        )
+        return response.status_code == 200
+    except Exception:
+        return False
+
+def refresh_access_token():
+    env = dotenv_values(ENV_FILE)
+
+    response = requests.post(
+        "https://id.twitch.tv/oauth2/token",
+        params={
+            "grant_type": "refresh_token",
+            "refresh_token": env["TWITCH_REFRESH_TOKEN"],
+            "client_id": env["TWITCH_CLIENT_ID"],
+            "client_secret": env["TWITCH_CLIENT_SECRET"],
+        },
+        timeout=30,
+    )
+
+    response.raise_for_status()
+    data = response.json()
+
+    env["TWITCH_ACCESS_TOKEN"] = data["access_token"]
+
+    if "refresh_token" in data:
+        env["TWITCH_REFRESH_TOKEN"] = data["refresh_token"]
+
+    with open(ENV_FILE, "w") as f:
+        for key, value in env.items():
+            f.write(f"{key}={value}\n")
+
+    print("Token refreshed")
+
+    return env["TWITCH_ACCESS_TOKEN"]
+
+# Reload environment after refresh
+load_dotenv(ENV_FILE,override=True)
+load_dotenv(dotenv_path="production.env", override=True)
+
+ACCESS_TOKEN = os.getenv("TWITCH_ACCESS_TOKEN")
+
+if not ACCESS_TOKEN or not access_token_is_valid(ACCESS_TOKEN):
+    print("Access token expired or invalid. Refreshing...")
+    refresh_access_token()
+else:
+    print("Access token still valid.")
+
+ACCESS_TOKEN = os.getenv("TWITCH_ACCESS_TOKEN")
+CHANNEL = os.getenv("TWITCH_CHANNEL")
+MONGO_CONNECTION_STRING = os.getenv("MONGO_CONNECTION_STRING")
+
+
+def insert_topic(topic, username,MONGO_CONNECTION_STRING):
+    # Replace with your actual connection string
+    client = MongoClient(MONGO_CONNECTION_STRING)
+    
+    db = client["Sitcom"]
+    collection = db["suggested_topics"]
+
+    # Construct the document
+    doc = {
+        "topic": topic,
+        "username": username,
+        "creation_time": datetime.datetime.now(datetime.timezone.utc),
+        "source":"TWITCH",
+        "processed": False
+    }
+
+    result = collection.insert_one(doc)
+    print(f"Successfully inserted document with ID: {result.inserted_id}")
+    client.close()
+
 
 class Bot(commands.Bot):
     def __init__(self):
-        # 1. Put your Client ID here
-        # 2. prefix is what starts a command
         super().__init__(
-            client_id=CLIENT_ID, 
-            prefix='!', 
-            initial_channels=['your_channel_name']
-        )
-
-    async def setup_hook(self):
-        # This part registers your tokens so the bot can REFRESH them automatically
-        # Replace these strings with your actual tokens
-        await self.add_token(
-            token=ACCESS_TOKEN, 
-            refresh=REFRESH_TOKEN
+            token=ACCESS_TOKEN,
+            prefix="!",
+            initial_channels=[CHANNEL],
         )
 
     async def event_ready(self):
-        print(f'Logged in as | {self.nick}')
-        print(f'User ID is | {self.user_id}')
+        print(f"Connected as {self.nick}")
 
-    # --- YOUR CUSTOM TOPIC COMMAND ---
-    @commands.command()
-    async def topic(self, ctx, *, message: str):
-        # Logic: Only allow the Broadcaster or Mods to change the topic
-        if ctx.author.is_mod or ctx.author.name.lower() == 'your_channel_name':
-            print(f"New topic received: {message}")
-            
-            # Here you can add your API call or save to a file
-            # Example: open("topic.txt", "w").write(message)
-            
-            await ctx.send(f"Topic has been updated to: {message}")
-        else:
-            await ctx.send(f"@{ctx.author.name}, only mods can use that!")
+    async def event_message(self, message):
+        if message.echo:
+            return
 
-# Create and run the bot
-bot = Bot()
-bot.run()
+        print(f"{message.author.name}: {message.content}")
+        topic = message.content.replace('!topic','')
+        username = message.author.name
+        if message.content.lower().startswith("!topic"):
+            insert_topic(topic, username,MONGO_CONNECTION_STRING)
+            await message.channel.send(
+                "Adding the topic to play: "+topic+". Please wait 2-3 minutes for generation."
+            )
+            
+
+if __name__ == "__main__":
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    print("ACCESS_TOKEN =", ACCESS_TOKEN)
+    print("CHANNEL =", CHANNEL)
+    bot = Bot()
+    bot.run()
