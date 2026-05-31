@@ -32,44 +32,36 @@ for suggested_topic in suggested_topics:
     suggested_topic_id = suggested_topic.get('_id')
     print(f"Picked suggested topic id:  {suggested_topic_id}")
     topic = suggested_topic.get("topic")
-    username = suggested_topic.get("username")
-    user_id = suggested_topic.get("user_id")
-    message_id = suggested_topic.get("message_id")
-    group_id = suggested_topic.get("group_id")
     source = suggested_topic.get("source")
+    username = suggested_topic.get("username")
+    prompt = topic
     try:
-        success = True
-        real_topic= topic
         if(topic.strip().endswith("--hide")):
-             real_topic = topic.removesuffix("--hide")
-        dialogues = get_scenario_text(real_topic,username,CHAT_GPT_API_KEY)
-        if(topic.strip().endswith("--hide")):
-            document = {
-                "topic": "Sitcom",
-                "real_topic": real_topic,
-                "scenario": dialogues.get("scenario"),
-                "user_id": user_id,
-                "message_id": message_id,
-                "group_id": group_id,
-                "username": username,
-                "source": source,
-                "generation_time": datetime.now(timezone.utc),
-                "unload": False,
-                "processed": False
-            }
-        else:
-             document = {
-                "topic": topic,
-                "scenario": dialogues.get("scenario"),
-                "user_id": user_id,
-                "message_id": message_id,
-                "group_id": group_id,
-                "username": username,
-                "source": source,
-                "generation_time": datetime.now(timezone.utc),
-                "unload": False,
-                "processed": False
-            }
+            prompt = topic.removesuffix("--hide")
+            topic =  "Sitcom"
+
+        dialogues = get_scenario_text(prompt,username,CHAT_GPT_API_KEY)
+
+        document = {
+        "scenario": dialogues.get("scenario"),
+        "prompt": prompt,
+        "topic": topic,
+        "source": source,
+        "username": username,
+        "generation_time": datetime.now(timezone.utc),
+        "unload": False,
+        "processed": False
+        }
+
+        if(source =="TG"):
+                print("TG")
+                user_id = suggested_topic.get("user_id")
+                message_id = suggested_topic.get("message_id")
+                group_id = suggested_topic.get("group_id")
+                document["user_id"] =  user_id
+                document["message_id"] =  message_id
+                document["group_id"] =  group_id
+
         result = generated_scenario_collection.insert_one(document)
         print(result.inserted_id)
 
