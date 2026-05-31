@@ -57,4 +57,4 @@ def insert_topic(topic, username, user_id,message_id, group_id,MONGO_CONNECTION_
     result = collection.insert_one(doc)
     print(f"Successfully inserted document with ID: {result.inserted_id}")
     client.close()
-    get_modal_up(MODAL_API_KEY)
+    # get_modal_up(MODAL_API_KEY)
