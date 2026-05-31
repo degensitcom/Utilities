@@ -4,6 +4,8 @@ from pymongo import MongoClient
 from datetime import datetime, timedelta
 from TTS_generator.s3_uploader import *
 from TTS_generator.modal_request import *
+from datetime import datetime, timedelta, timezone
+
 # 1. Load the variables from .env into the environment
 
 load_dotenv(dotenv_path="common_creds.env", override=True)
@@ -76,6 +78,7 @@ for scenario in results:
                 "$set": {
                     "scenario": dialogues, # This saves the new audio_paths back to Mongo
                     "new_tts_audio": True, 
+                    "unload_time": datetime.now(timezone.utc),
                     "unload": True
                     }
             }
